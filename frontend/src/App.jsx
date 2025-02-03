@@ -13,6 +13,7 @@ function App() {
          <Route path="/canvas" element={<Canvas />} />
       </Routes>
     </Router>
+    </>
   );
 }
 

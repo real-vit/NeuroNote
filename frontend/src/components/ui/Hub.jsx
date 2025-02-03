@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import Navbar from './Navbar.jsx';
+import Navbar from './NavBar.jsx';
 
 const Hub = () => {
   const handleLeftClick = () => {
