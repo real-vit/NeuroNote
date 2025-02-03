@@ -120,14 +120,13 @@ const Navbar = () => {
                 <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-gray-900 hover:from-gray-700 hover:to-black transition-all duration-300">
                   NeuroNote
                 </h1>
-                <p className="text-sm text-gray-500 italic mt-2">Throttling Towards Excellence</p>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
       <motion.div
-        className="h-1 bg-gradient-to-r from-gray-300 to-gray-500"
+        className="h-1 bg-gradient-to-r from-gray-400 to-black"
         layoutId="underline"
       ></motion.div>
     </nav>
