@@ -1,16 +1,17 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'  
 import './App.css'
+import Hub from './components/ui/Hub.jsx'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className='text-center'>
-      <p className='text-2xl font-black'>hello!</p>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Hub />} />
+      </Routes>
+    </Router>
   )
 }
 
 export default App
+
