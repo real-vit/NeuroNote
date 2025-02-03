@@ -5,6 +5,7 @@ import Login from './components/ui/Login.jsx';
 import Canvas from './components/ui/Canvas.jsx';
 function App() {
   return (
+    <>
     <Router>
       <Routes>
         <Route path="/" element={<Hub />} />
@@ -13,7 +14,6 @@ function App() {
       </Routes>
     </Router>
   );
-
 }
 
 export default App;
