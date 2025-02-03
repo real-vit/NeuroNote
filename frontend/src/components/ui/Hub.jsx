@@ -47,7 +47,7 @@ const Hub = () => {
         <div className="w-full h-1/2 flex justify-between items-center p-4 space-x-4">
           <button
             onClick={handleLeftClick}
-            className="group w-1/3 h-4/5 rounded-lg flex flex-col justify-center items-center shadow-lg transition-transform hover:scale-105 bg-white relative overflow-hidden cursor-pointer"
+            className="group w-105 h-4/5 rounded-lg flex flex-col justify-center items-center shadow-lg transition-transform hover:scale-105 bg-white relative overflow-hidden cursor-pointer"
           >
             <motion.p
               className="text-2xl font-bold text-black text-center relative z-10 pointer-events-none"
@@ -68,7 +68,7 @@ const Hub = () => {
             <motion.img
               src="/src/assets/One.svg"
               alt="One"
-              className="w-24 h-24 mt-4 md:w-32 md:h-32 relative z-10 pointer-events-none mix-blend-mode"
+              className="w-10==24 h-24 mt-4 md:w-32 md:h-32 relative z-10 pointer-events-none mix-blend-mode"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 5 }}
@@ -77,7 +77,7 @@ const Hub = () => {
 
           <button
             onClick={handleRightTopClick}
-            className="group w-1/3 h-4/5 rounded-lg flex flex-col justify-center items-center shadow-lg transition-transform hover:scale-105 bg-white relative overflow-hidden cursor-pointer"
+            className="group w-105 h-4/5 rounded-lg flex flex-col justify-center items-center shadow-lg transition-transform hover:scale-105 bg-white relative overflow-hidden cursor-pointer"
           >
             <motion.p
               className="text-2xl font-bold text-black text-center relative z-10 pointer-events-none"
@@ -107,7 +107,7 @@ const Hub = () => {
 
           <button
             onClick={handleRightBottomClick}
-            className="group w-1/3 h-4/5 rounded-lg flex flex-col justify-center items-center shadow-lg transition-transform hover:scale-105 bg-white relative overflow-hidden cursor-pointer"
+            className="group w-105 h-4/5 rounded-lg flex flex-col justify-center items-center shadow-lg transition-transform hover:scale-105 bg-white relative overflow-hidden cursor-pointer"
           >
             <motion.p
               className="text-2xl font-bold text-black text-center relative z-10 pointer-events-none"
