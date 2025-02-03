@@ -1,17 +1,17 @@
-import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'  
-import './App.css'
-import Hub from './components/ui/Hub.jsx'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import Hub from './components/ui/Hub.jsx';
+import Login from './components/ui/Login.jsx';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Hub />} />
+        
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
-  )
+  );
 }
 
-export default App
-
+export default App;
