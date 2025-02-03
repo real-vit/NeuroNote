@@ -237,6 +237,7 @@ const Canvas = () => {
     <Navbar/>
     <div className="flex h-screen">
       {/* Sidebar */}
+
       <div className="mt-16 md:mt-20 fixed top-0 left-0 w-16 md:w-20 bg-gray-100 p-4 space-y-4 border-r border-gray-200 h-screen">
   <button
     className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm"

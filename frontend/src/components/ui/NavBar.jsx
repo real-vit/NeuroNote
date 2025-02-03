@@ -1,17 +1,23 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
-  const navigateTo = (path) => {
-    window.location.href = path;
-    setIsOpen(false);
+  const navigate = useNavigate();
+  
+  const handleClick = () => {
+        navigate('/login');
+    };
+    const handleClick1 = () => {
+      navigate('/');
   };
 
   return (
@@ -27,7 +33,8 @@ const Navbar = () => {
             className="cursor-pointer flex justify-center md:justify-start" 
             onClick={() => navigateTo("/")}
           >
-            <h1 className="text-3xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-gray-900 hover:from-gray-700 hover:to-black transition-all duration-300">
+            <h1 className="text-3xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-600 to-gray-900 hover:from-gray-700 hover:to-black transition-all duration-300"
+            onClick={handleClick1}>
               NeuroNote
             </h1>
           </div>
@@ -63,7 +70,8 @@ const Navbar = () => {
                 onClick={() => navigateTo("/hub")} 
                 className="relative px-6 py-2 rounded-full shadow-md hover:shadow-lg border border-gray-200 hover:border-transparent overflow-hidden transition-all duration-300 transform hover:scale-105 group"
               >
-                <span className="relative z-10 text-gray-700 group-hover:text-white transition-colors duration-300">
+                <span className="relative z-10 text-gray-700 group-hover:text-white transition-colors duration-300"
+                onClick={handleClick}>
                   Try Now
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-white to-gray-100"></div>

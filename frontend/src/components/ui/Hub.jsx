@@ -1,19 +1,25 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Navbar from './NavBar.jsx';
+
 import BackgroundLines from './background-lines.jsx';
 
+import { useNavigate } from 'react-router-dom';
+
+
 const Hub = () => {
-  const handleLeftClick = () => {
-    alert('Left section clicked');
-  };
+    const navigate = useNavigate();
+
+    const handleLeftClick = () => {
+      navigate('/canvas');
+    };
 
   const handleRightTopClick = () => {
-    alert('Top-right section clicked');
+    alert('Collab clicked');
   };
 
   const handleRightBottomClick = () => {
-    alert('Bottom-right section clicked');
+    alert('My notes clicked');
   };
 
   return (
@@ -23,6 +29,7 @@ const Hub = () => {
     <BackgroundLines className="w-full flex flex-col bg-black font-inter overflow-hidden px-[5%]">
       <div className="w-full h-full flex flex-col justify-between">
         <div className="w-full h-1/2 flex flex-col justify-center items-center pl-0 p-4">
+
           <motion.h1
             className="font-bold text-4xl md:text-6xl font-inter text-center relative z-10 mb-4 mt-25 bg-clip-text text-white"
             initial={{ clipPath: 'inset(0 100% 0 0)' }}
@@ -31,6 +38,7 @@ const Hub = () => {
           >
             Welcome to NeuroNote!
           </motion.h1>
+
           
           <motion.h1
             className="text-xl md:text-2xl font-inter text-white text-center relative z-10"
