@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bold, Italic, Image, Save, Plus, Minus, Mic, Clipboard, X, FileText } from 'lucide-react';
+import { Bold, Italic, Image, Save, Plus, Minus, Mic, Clipboard, X, FileText, Heading } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 import { motion } from 'framer-motion';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { createWorker } from 'tesseract.js';
 import Navbar from './NavBar.jsx';
-// Set the workerSrc to the correct path
+
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 
@@ -13,6 +13,7 @@ const Canvas = () => {
   const [fontSize, setFontSize] = useState(16);
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
+  const[isHeading, setIsHeading] = useState(false);
   const [recording, setRecording] = useState(false);
   const [recordedText, setRecordedText] = useState('');
   const [showSidebar, setShowSidebar] = useState(false);
@@ -61,6 +62,13 @@ const Canvas = () => {
     document.execCommand('italic', false);
     setIsItalic(!isItalic);
   };
+
+  const handleHeading = () => {
+    document.execCommand('formatBlock', false, '<h1>');
+    setIsHeading(!isHeading);
+};
+
+
 
   const handleFontSizeIncrease = () => {
     setFontSize((prev) => prev + 2);
@@ -229,41 +237,42 @@ const Canvas = () => {
     <Navbar/>
     <div className="flex h-screen">
       {/* Sidebar */}
-      <div className="mt-20 fixed top-0 left-0 w-20 bg-gray-100 p-4 space-y-4 border-r border-gray-200 h-screen">
+
+      <div className="mt-16 md:mt-20 fixed top-0 left-0 w-16 md:w-20 bg-gray-100 p-4 space-y-4 border-r border-gray-200 h-screen">
   <button
-    className="w-12 h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm"
+    className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm"
     onClick={handleSaveAsPDF}
     title="Save as PDF"
   >
-    <Save className="w-6 h-6" />
+    <Save className="w-4 h-4 md:w-6 md:h-6" />
   </button>
 
   <label className="flex flex-col gap-2">
     <div
-      className="w-12 h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+      className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
       title="Upload Image"
     >
-      <Image className="w-6 h-6" />
+      <Image className="w-4 h-4 md:w-6 md:h-6" />
     </div>
     <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
   </label>
 
   <button
-    className={`w-12 h-12 rounded-full transition-colors flex items-center justify-center gap-2 shadow-sm ${
+    className={`w-8 h-8 md:w-12 md:h-12 rounded-full transition-colors flex items-center justify-center gap-2 shadow-sm ${
       recording ? 'bg-red-500 text-white' : 'bg-white/50 text-black hover:bg-gray-500 hover:text-white'
     }`}
     onClick={recording ? handleStopRecording : handleStartRecording}
     title={recording ? 'Stop Recording' : 'Start Recording'}
   >
-    <Mic className="w-6 h-6" />
+    <Mic className="w-4 h-4 md:w-6 md:h-6" />
   </button>
 
   <button
-    className="w-12 h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+    className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
     onClick={() => fileInputRef.current.click()}
     title="Upload File"
   >
-    <FileText className="w-6 h-6" />
+    <FileText className="w-4 h-4 md:w-6 md:h-6" />
   </button>
   <input
     type="file"
@@ -296,6 +305,13 @@ const Canvas = () => {
               <Italic className="w-4 h-4" />
             </button>
 
+            <button
+              className={`p-2 rounded-md transition-colors ${isHeading ? 'bg-gray-100 text-gray-600' : 'hover:bg-gray-100'}`}
+              onClick={handleHeading}
+            >
+              <Heading className="w-4 h-4" />
+            </button>
+
             <div className="flex items-center gap-2 border-l pl-2 ml-2">
               <button className="p-2 hover:bg-gray-100 rounded-md transition-colors" onClick={handleFontSizeDecrease}>
                 <Minus className="w-4 h-4" />
@@ -311,7 +327,7 @@ const Canvas = () => {
         {/* Canvas Area */}
         <div
           ref={canvasRef}
-          className="w-full min-h-[500px] p-4 border rounded-lg bg-white shadow-sm focus:outline-none"
+          className="w-full min-h-[500px] p-2 md:p-4 border rounded-lg bg-white shadow-sm focus:outline-none"
           contentEditable
           suppressContentEditableWarning
         />
@@ -322,13 +338,13 @@ const Canvas = () => {
           initial={{ x: '100%' }}
           animate={{ x: showSidebar ? 0 : '100%' }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="fixed right-0 top-0 h-full w-64 bg-white text-black p-4 shadow-lg border-l border-gray-300"
+          className="fixed right-0 top-0 h-full w-64 bg-white text-black p-4 shadow-lg border-l border-gray-300 mt-20"
         >
           {/* Header */}
           <div className="flex justify-between items-center mb-3">
             <p className="text-lg font-semibold">Recording</p>
             <button onClick={() => setShowSidebar(false)} className="text-black hover:text-gray-600">
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5 md:w-5 h-5" />
             </button>
           </div>
 
@@ -374,7 +390,7 @@ const Canvas = () => {
       initial={{ x: '100%' }}
       animate={{ x: 0 }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
-      className="fixed right-0 top-0 h-full w-64 bg-white text-black p-4 shadow-lg border-l border-gray-300"
+      className="fixed right-0 top-0 h-full w-64 bg-white text-black p-4 shadow-lg border-l border-gray-300 mt-20"
     >
       <div className="flex justify-between items-center mb-3">
         <p className="text-lg font-semibold">Document Text</p>
