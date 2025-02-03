@@ -4,7 +4,7 @@ import html2pdf from 'html2pdf.js';
 import { motion } from 'framer-motion';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { createWorker } from 'tesseract.js';
-
+import Navbar from './NavBar.jsx';
 // Set the workerSrc to the correct path
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
@@ -225,9 +225,11 @@ const Canvas = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="flex h-screen">
       {/* Sidebar */}
-      <div className="fixed top-0 left-0 w-20 bg-gray-100 p-4 space-y-4 border-r border-gray-200 h-screen">
+      <div className="mt-20 fixed top-0 left-0 w-20 bg-gray-100 p-4 space-y-4 border-r border-gray-200 h-screen">
   <button
     className="w-12 h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm"
     onClick={handleSaveAsPDF}
@@ -276,7 +278,7 @@ const Canvas = () => {
 
 
       {/* Main Content */}
-      <div className="flex-1 p-4 ml-20">
+      <div className="flex-1 p-4 ml-20 mt-20">
         {/* Formatting Toolbar */}
         <div className="mb-4 p-2 border rounded-lg bg-white shadow-sm">
           <div className="flex items-center gap-2">
@@ -421,6 +423,7 @@ const Canvas = () => {
     </motion.div>
   )}
     </div>
+    </>
   );
 };
 
