@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import Navbar from './Navbar.jsx';
 
 const Hub = () => {
   const handleLeftClick = () => {
@@ -15,6 +16,8 @@ const Hub = () => {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="h-screen w-full flex flex-col bg-black font-inter overflow-hidden px-[5%]">
    
       <div className="w-full h-full flex flex-col justify-between">
@@ -134,6 +137,7 @@ const Hub = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
