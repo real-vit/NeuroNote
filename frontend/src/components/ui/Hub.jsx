@@ -1,10 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Navbar from './NavBar.jsx';
-
-import BackgroundLines from './background-lines.jsx';
-
 import { useNavigate } from 'react-router-dom';
+import BackgroundLines from './background-lines.jsx';
 
 
 const Hub = () => {
@@ -25,6 +23,7 @@ const Hub = () => {
   return (
     <body className='bg-black h-screen'>
       <div className=''>
+        <Navbar/>
     
     <BackgroundLines className="w-full flex flex-col bg-black font-inter overflow-hidden px-[5%]">
       <div className="w-full h-full flex flex-col justify-between">
