@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion'; 
+import { motion } from 'framer-motion';
 
 const Hub = () => {
   const handleLeftClick = () => {
@@ -15,89 +15,122 @@ const Hub = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col md:flex-row bg-white font-inter"> 
-      <div
-        onClick={handleLeftClick}
-        className="w-full sm:h-1/2 md:w-1/2 md:h-full cursor-pointer flex flex-col justify-center items-center bg-inherit border-b border-black-200 md:border-r"
+    <div className="h-screen w-full flex flex-col bg-black font-inter overflow-hidden px-[5%]">
+   
+      <div className="w-full h-full flex flex-col justify-between">
 
-      >
- <motion.p
-  className="text-2xl mt-20 text-black text-center md:text-3xl md:mt-20"
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ duration: 1 }}
-  style={{
-    background: 'linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.35) 100%)', 
-    '-webkit-background-clip': 'text',
-    color: 'transparent', 
-  }}
+        <div className="w-full h-1/2 flex flex-col justify-center items-center pl-0 p-4">
+        <motion.h1
+  className="text-6xl font-inter text-white text-center relative z-10 mb-4 mt-25"
+  initial={{ clipPath: 'inset(0 100% 0 0)' }}
+  animate={{ clipPath: 'inset(0 0% 0 0)' }}
+  transition={{ duration: 2, ease: "easeOut" }}
 >
-  Create Notes
-</motion.p>
+  Welcome to NeuroNote!
+</motion.h1>
 
-        <motion.img
-          src="/src/assets/One.svg"
-          alt="One"
-          className="w-48 h-48 mt-5 sm:w-20 sm:h-20 sm:mt-5 md:w-56 md:h-56"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        />
-      </div>
 
-      <div className="w-full md:w-1/2 h-full flex flex-col bg-inherit">
-        <div
-          onClick={handleRightTopClick}
-          className="mt-2 w-full h-1/2 cursor-pointer flex flex-col justify-center items-center md:mt-17 border-b border-black-200"
-        >
-          <motion.p
-            className="text-black text-center text-2xl"
+          
+          <motion.h1
+            className="text-2xl font-inter text-white text-center relative z-10"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            style={{
-              background: 'linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.35) 100%)', 
-              '-webkit-background-clip': 'text',
-              color: 'transparent', 
-            }}
+            transition={{ duration: 5 }}
           >
-            Collaborate
-          </motion.p>
-          <motion.img
-            src="/src/assets/Two.svg"
-            alt="Two"
-            className="w-45 h-45 mt-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-          />
+            Your all in one place for note taking
+          </motion.h1>
         </div>
 
-        <div
-          onClick={handleRightBottomClick}
-          className="w-full h-1/2 cursor-pointer flex flex-col justify-center items-center mt-4"
-        >
-          <motion.p
-            className="text-black text-center text-2xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            style={{
-              background: 'linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.35) 100%)', 
-              '-webkit-background-clip': 'text',
-              color: 'transparent', 
-            }}
+        <div className="w-full h-1/2 flex justify-between items-center p-4 space-x-4">
+          <button
+            onClick={handleLeftClick}
+            className="group w-1/3 h-4/5 rounded-lg flex flex-col justify-center items-center shadow-lg transition-transform hover:scale-105 bg-white relative overflow-hidden cursor-pointer"
           >
-            My Books
-          </motion.p>
-          <motion.img
-            src="/src/assets/Three.svg"
-            alt="Three"
-            className="w-45 h-45 mt-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-          />
+            <motion.p
+              className="text-2xl font-bold text-black text-center relative z-10 pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration:3 }}
+            >
+              Create Notes
+            </motion.p>
+            <motion.p
+  className="text-center text-sm text-black-500 mt-2"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 5}}
+>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+</motion.p>
+            <motion.img
+              src="/src/assets/One.svg"
+              alt="One"
+              className="w-24 h-24 mt-4 md:w-32 md:h-32 relative z-10 pointer-events-none mix-blend-mode"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 5 }}
+            />
+          </button>
+
+          <button
+            onClick={handleRightTopClick}
+            className="group w-1/3 h-4/5 rounded-lg flex flex-col justify-center items-center shadow-lg transition-transform hover:scale-105 bg-white relative overflow-hidden cursor-pointer"
+          >
+            <motion.p
+              className="text-2xl font-bold text-black text-center relative z-10 pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 3}}
+            >
+              Collaborate
+            </motion.p>
+            <motion.p
+  className="text-center text-sm text-black-500 mt-2"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 5}}
+>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+</motion.p>
+            <motion.img
+              src="/src/assets/Two.svg"
+              alt="Two"
+              className="w-24 h-24 mt-4 md:w-32 md:h-32 relative z-10 pointer-events-none mix-blend-mode"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 5}}
+            />
+          </button>
+
+          <button
+            onClick={handleRightBottomClick}
+            className="group w-1/3 h-4/5 rounded-lg flex flex-col justify-center items-center shadow-lg transition-transform hover:scale-105 bg-white relative overflow-hidden cursor-pointer"
+          >
+            <motion.p
+              className="text-2xl font-bold text-black text-center relative z-10 pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 3}}
+            >
+              My Notes
+            </motion.p>
+            <motion.p
+  className="text-center text-sm text-black-500 mt-2"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ duration: 5}}
+>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+</motion.p>
+            <motion.img
+              src="/src/assets/Three.svg"
+              alt="Three"
+              className="w-24 h-24 mt-4 md:w-32 md:h-32 relative z-10 pointer-events-none mix-blend-mode"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 5 }}
+            />
+          </button>
         </div>
       </div>
     </div>
@@ -105,6 +138,17 @@ const Hub = () => {
 };
 
 export default Hub;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
