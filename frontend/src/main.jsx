@@ -7,6 +7,7 @@ import Canvas from './components/ui/Canvas.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+
     <Router>
       
       <Routes>
@@ -16,3 +17,4 @@ createRoot(document.getElementById('root')).render(
     </Router>
   </StrictMode>
 );
+
