@@ -82,7 +82,7 @@ const Hub = () => {
                 initial={{ y: 0, boxShadow: '0px 0px 10px rgba(0,0,0,0.1)' }}
                 whileHover={{ y: -5, boxShadow: '0px 10px 20px rgba(0,0,0,0.2)' }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="group w-full sm:w-2/5 md:w-1/4 h-40 md:h-64 rounded-lg flex flex-row md:flex-col justify-between md:justify-center items-center shadow-lg relative overflow-hidden cursor-pointer mx-2 sm:mx-3 md:mx-4 p-3 sm:p-4 md:p-5 mb-4 sm:mb-0 bg-grey-100 mt-25"
+                className="group w-full sm:w-2/5 md:w-1/4 h-40 md:h-64 rounded-lg flex flex-row md:flex-col justify-between md:justify-center items-center shadow-lg relative overflow-hidden cursor-pointer mx-2 sm:mx-3 md:mx-4 p-3 sm:p-4 md:p-5 mb-4 sm:mb-0 bg-grey-100 mt-15"
               >
                 {/* Background overlay */}
                 <motion.div

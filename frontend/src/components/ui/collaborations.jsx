@@ -5,12 +5,14 @@ import { motion } from 'framer-motion';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { createWorker } from 'tesseract.js';
 import Navbar from './NavBar.jsx';
+import { useNavigate } from "react-router-dom";
 
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 
 const Collabs = () => {
+  const navigate = useNavigate();
   const [fontSize, setFontSize] = useState(16);
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
@@ -300,72 +302,98 @@ const Collabs = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="flex h-screen">
-        {/* Sidebar */}
+    <Navbar/>
+    <div className="flex h-screen">
+      {/* Sidebar */}
+     
+      <div className="mt-16 md:mt-20 fixed top-0 left-0 w-16 md:w-20 bg-gray-100 p-4 space-y-4 border-r border-gray-200 h-screen">
+      <button
+  className="relative w-8 h-8 md:w-12 md:h-12 rounded-full bg-green-500 text-white hover:bg-green-600 transition-colors flex items-center justify-center gap-2 shadow-sm group"
+  onClick={() => setShowTeamSidebar(!showTeamSidebar)}
+>
+  <Users className="w-4 h-4 md:w-6 md:h-6" />
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto w-32">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    My Team
+  </div>
+</button>
 
-        <div className="mt-16 md:mt-20 fixed top-0 left-0 w-16 md:w-20 bg-gray-100 p-4 space-y-4 border-r border-gray-200 h-screen">
-          <button
-            className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-green-500 text-white hover:bg-green-600 transition-colors flex items-center justify-center gap-2 shadow-sm"
-            onClick={() => setShowTeamSidebar(!showTeamSidebar)}
-            title="My Team"
-          >
-            <Users className="w-4 h-4 md:w-6 md:h-6" />
-          </button>
+<button
+  className="relative w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm group"
+  onClick={handleSaveAsPDF}
+>
+  <Save className="w-4 h-4 md:w-6 md:h-6" />
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto w-32">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    Save as PDF
+  </div>
+</button>
 
-          <button
-            className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm"
-            onClick={handleSaveAsPDF}
-            title="Save as PDF"
-          >
-            <Save className="w-4 h-4 md:w-6 md:h-6" />
-          </button>
+<label className="flex flex-col gap-2 group relative">
+  <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm">
+    <Image className="w-4 h-4 md:w-6 md:h-6" />
+  </div>
+  <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto w-32">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    Upload Image
+  </div>
+</label>
 
-          <label className="flex flex-col gap-2">
-            <div
-              className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-              title="Upload Image"
-            >
-              <Image className="w-4 h-4 md:w-6 md:h-6" />
-            </div>
-            <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
-          </label>
+<div className="group relative">
+  <button
+    className={`w-8 h-8 md:w-12 md:h-12 rounded-full transition-colors flex items-center justify-center gap-2 shadow-sm ${recording ? 'bg-red-500 text-white' : 'bg-white/50 text-black hover:bg-gray-500 hover:text-white'}`}
+    onClick={recording ? handleStopRecording : handleStartRecording}
+  >
+    <Mic className="w-4 h-4 md:w-6 md:h-6" />
+  </button>
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto w-32">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    {recording ? 'Stop Recording' : 'Start Recording'}
+  </div>
+</div>
 
-          <button
-            className={`w-8 h-8 md:w-12 md:h-12 rounded-full transition-colors flex items-center justify-center gap-2 shadow-sm ${recording ? 'bg-red-500 text-white' : 'bg-white/50 text-black hover:bg-gray-500 hover:text-white'
-              }`}
-            onClick={recording ? handleStopRecording : handleStartRecording}
-            title={recording ? 'Stop Recording' : 'Start Recording'}
-          >
-            <Mic className="w-4 h-4 md:w-6 md:h-6" />
-          </button>
+<div className="group relative">
+  <button
+    className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
+    onClick={() => fileInputRef.current.click()}
+  >
+    <FileText className="w-4 h-4 md:w-6 md:h-6" />
+  </button>
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto w-32">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    Upload File
+  </div>
+</div>
 
-          <button
-            className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-            onClick={() => fileInputRef.current.click()}
-            title="Upload File"
-          >
-            <FileText className="w-4 h-4 md:w-6 md:h-6" />
-          </button>
-          <input
-            type="file"
-            accept="application/pdf, image/*"
-            className="hidden"
-            onChange={handleFileUpload}
-            ref={fileInputRef}
-          />
-          <div className="relative flex items-center justify-center">
-            {/* Static Gradient Circle */}
-            <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 absolute" />
+<input
+  type="file"
+  accept="application/pdf, image/*"
+  className="hidden"
+  onChange={handleFileUpload}
+  ref={fileInputRef}
+/>
 
-            {/* Button on Top */}
-            <button
-              className="relative z-10 w-7 h-7 md:w-11 md:h-11 bg-white rounded-full hover:bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 group flex items-center justify-center"
-              onClick={handleSparklesClick}>
-              <Sparkles className="w-4 h-4 md:w-6 md:h-6 text-pink-500 group-hover:text-white" />
-            </button>
-          </div>
-        </div>
+<div className="relative flex items-center justify-center group">
+  {/* Static Gradient Circle */}
+  <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 absolute" />
+  
+  {/* Button on Top */}
+  <button 
+    className="relative z-10 w-7 h-7 md:w-11 md:h-11 bg-white rounded-full hover:bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-colors flex items-center justify-center cursor-pointer shadow-sm"
+    onClick={handleSparklesClick}
+  >
+    <Sparkles className="w-4 h-4 md:w-6 md:h-6 text-pink-500 group-hover:text-white" />
+  </button>
+
+  {/* Tooltip */}
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto w-32">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    AI Assistant
+  </div>
+</div>
+
+</div>
 
 
 
@@ -717,33 +745,40 @@ const Collabs = () => {
               </motion.button>
             </div>
 
-            {/* Buttons */}
-            <div className="space-y-4">
-              {[
-                { icon: Book, label: 'Summarise', color: 'text-blue-500', gradient: 'from-blue-50 to-blue-100' },
-                { icon: Search, label: 'Find Resources', color: 'text-purple-500', gradient: 'from-purple-50 to-purple-100' },
-                { icon: BrainCircuit, label: 'Generate Quiz', color: 'text-pink-500', gradient: 'from-pink-50 to-pink-100' }
-              ].map(({ icon: Icon, label, color, gradient }) => (
-                <motion.button
-                  key={label}
-                  variants={buttonVariants}
-                  whileHover="hover"
-                  whileTap="tap"
-                  className={`w-full p-4 bg-gradient-to-r ${gradient} rounded-xl shadow-sm 
-                         hover:shadow-md transition-shadow duration-200 
-                         flex items-center gap-4 group`}
-                >
-                  <div className={`${color} p-2 bg-white rounded-lg shadow-sm 
-                             group-hover:shadow transition-shadow duration-200`}>
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <span className="text-gray-700 font-medium">{label}</span>
-                </motion.button>
-              ))}
-            </div>
+        {/* Buttons */}
+               <div className="space-y-4">
+                  {[
+                    { icon: Book, label: "Summarise", color: "text-blue-500", gradient: "from-blue-50 to-blue-100" },
+                    { icon: Search, label: "Find Resources", color: "text-purple-500", gradient: "from-purple-50 to-purple-100" },
+                    { 
+                      icon: BrainCircuit, 
+                      label: "Generate Quiz", 
+                      color: "text-pink-500", 
+                      gradient: "from-pink-50 to-pink-100", 
+                      onClick: () => navigate("/quiz") // Ensure this is included
+                    }
+                  ].map(({ icon: Icon, label, color, gradient, onClick }) => (
+                    <motion.button
+                      key={label}
+                      variants={buttonVariants}
+                      whileHover="hover"
+                      whileTap="tap"
+                      onClick={onClick} 
+                      className={`w-full p-4 bg-gradient-to-r ${gradient} rounded-xl shadow-sm 
+                                 hover:shadow-md transition-shadow duration-200 
+                                 flex items-center gap-4 group`}
+                    >
+                      <div className={`${color} p-2 bg-white rounded-lg shadow-sm 
+                                       group-hover:shadow transition-shadow duration-200`}>
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span className="text-gray-700 font-medium">{label}</span>
+                    </motion.button>
+                  ))}
+                </div>
           </div>
         </motion.div>
-      )}
+        )}
     </>
   );
 };
