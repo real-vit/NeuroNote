@@ -318,17 +318,26 @@ const Canvas = () => {
     onChange={handleFileUpload}
     ref={fileInputRef}
   />
-  <div className="relative flex items-center justify-center">
-      {/* Static Gradient Circle */}
-      <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 absolute" />
-      
-      {/* Button on Top */}
-      <button 
-      className="relative z-10 w-7 h-7 md:w-11 md:h-11 bg-white rounded-full hover:bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 group flex items-center justify-center"
-      onClick={handleSparklesClick}>
-        <Sparkles className="w-4 h-4 md:w-6 md:h-6 text-pink-500 group-hover:text-white" />
-      </button>
-    </div>
+<div className="relative flex items-center justify-center group">
+  {/* Static Gradient Circle */}
+  <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 absolute" />
+  
+  {/* Button on Top */}
+  <button 
+    className="relative z-10 w-7 h-7 md:w-11 md:h-11 bg-white rounded-full hover:bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-colors flex items-center justify-center cursor-pointer shadow-sm"
+    onClick={handleSparklesClick}
+  >
+    <Sparkles className="w-4 h-4 md:w-6 md:h-6 text-pink-500 group-hover:text-white" />
+  </button>
+
+  {/* Tooltip */}
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    AI Assistant
+  </div>
+</div>
+
+
 </div>
       {/* Main Content */}
       <div className="flex-1 p-4 ml-20 mt-20">
