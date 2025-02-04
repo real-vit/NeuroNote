@@ -11,10 +11,12 @@ const CollaborationLanding = () => {
   const navigate = useNavigate();
 
   const handleJoinRoom = () => {
-    if (!roomId.trim()) return;
+    console.log(roomId);
+    if (!roomId.trim()) return; 
     setIsJoinLoading(true);
+    
     setTimeout(() => {
-      navigate('/collab-canvas');
+      navigate(`/collab-canvas?roomId=${roomId}`);
     }, 1500);
   };
   

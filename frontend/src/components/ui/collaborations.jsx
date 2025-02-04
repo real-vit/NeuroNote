@@ -5,14 +5,15 @@ import { motion } from 'framer-motion';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { createWorker } from 'tesseract.js';
 import Navbar from './NavBar.jsx';
-import { useNavigate } from "react-router-dom";
-
+import { useSearchParams } from 'react-router-dom';
+import socket from "./socket"; 
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 
 const Collabs = () => {
-  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const roomId = searchParams.get("roomId");
   const [fontSize, setFontSize] = useState(16);
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
@@ -41,12 +42,10 @@ const Collabs = () => {
     { id: 2, name: 'Bob', online: true },
     { id: 3, name: 'Charlie', online: false },
   ]);
-  const [joinCode] = useState('TEAM-' + Math.random().toString(36).substring(2, 7).toUpperCase());
-  const [userId] = useState('user-' + Math.random().toString(36).substring(2, 9));
   const [copySuccess, setCopySuccess] = useState(false);
   const [membersOpen, setMembersOpen] = useState(false);
   const [showAISidebar, setShowAISidebar] = useState(false);
-
+  const userId = sessionStorage.getItem("userId");
   const buttonVariants = {
     hover: {
       scale: 1.02,
@@ -65,6 +64,40 @@ const Collabs = () => {
     }, 5000);
   };
 
+  
+  useEffect(() => {
+    socket.emit('joinRoom', { roomCode: roomId, userId: userId });
+    socket.on("connect", () => {
+      console.log("✅ Connected to server, socket ID:", socket.id);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("❌ Disconnected from server");
+    });
+
+    return () => {
+      socket.off("connect");
+      socket.off("disconnect");
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log("Socket connected:", socket.connected);
+    // ✅ Listen for messages from the server
+    socket.on('receiveMessage', (data) => {
+      console.log('Received from server:', data);  // Log the entire data object
+  
+      // ✅ Append received content to bigCanvas
+      if (bigCanvasRef.current) {
+        bigCanvasRef.current.innerHTML += data.message;  // Assuming data contains 'message' key
+      }
+    });
+  
+    return () => {
+      socket.off('receiveMessage'); // Clean up on unmount
+    };
+  });
+  
 
   useEffect(() => {
     if (smallCanvasRef.current) {
@@ -277,25 +310,26 @@ const Collabs = () => {
 
   const handlePushToBigCanvas = () => {
     if (smallCanvasRef.current && bigCanvasRef.current) {
-      // Get the HTML content from small canvas
       const smallCanvasContent = smallCanvasRef.current.innerHTML;
 
-      // Create the JSON object using joinCode instead of roomId
+      // Create the JSON object
       const pushData = {
         userId: userId,
-        roomId: joinCode, // Using joinCode instead of a separate roomId
-        html: smallCanvasContent
+        roomCode: roomId, // Ensure you're using the correct key expected by the backend
+        message: smallCanvasContent,
       };
-
+      console.log(userId);
+      console.log(roomId);
       // Log the JSON string to console
-      console.log('Push Data:', JSON.stringify(pushData, null, 2));
+      console.log('Sending Push Data:', JSON.stringify(pushData, null, 2));
 
-      // Continue with the original functionality
-      bigCanvasRef.current.innerHTML += smallCanvasContent;
-      smallCanvasRef.current.innerHTML = ''; // Clear small canvas
+      // ✅ Send data to WebSocket server
+      socket.emit('sendMessage', pushData);
+
+      // Clear small canvas after sending
+      smallCanvasRef.current.innerHTML = '';
     }
   };
-
   const handleSparklesClick = () => {
     setShowAISidebar(true);
   };

@@ -22,7 +22,7 @@ const Login = () => {
 
 
         try {
-            const response = await fetch("http://localhost:4000/auth/login", {
+            const response = await fetch("http://localhost:3002/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -39,8 +39,7 @@ const Login = () => {
             
             localStorage.setItem("accessToken", data.access_token);
             sessionStorage.setItem("username",loginData.username);
-
-            
+            sessionStorage.setItem("userId", data.userId);
             navigate("/");
         } catch (error) {
             console.error("Login Error:", error);

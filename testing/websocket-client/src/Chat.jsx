@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
 // Create a socket connection to the backend
-const socket = io("http://localhost:3002");
+const socket = io('http://localhost:3002', {
+  transports: ['websocket'],  // Force WebSocket connection instead of polling
+  withCredentials: true,
+});
 
 export default function ChatApp() {
   const [roomCode, setRoomCode] = useState("");

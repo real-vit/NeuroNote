@@ -55,7 +55,8 @@ const Register = () => {
         };
 
         try {
-            const response = await fetch("http://localhost:4000/auth/signup", {
+            // Send POST request to the backend API
+            const response = await fetch("http://localhost:3002/auth/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
