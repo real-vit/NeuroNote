@@ -6,6 +6,7 @@ import BackgroundLines from './background-lines.jsx';
 import Footer from './Footer.jsx';
 
 
+
 const Hub = () => {
   const navigate = useNavigate();
 
@@ -20,6 +21,7 @@ const Hub = () => {
   const handleRightBottomClick = () => {
     navigate('/search');
   };
+
 
   return (
     <div className="min-h-screen flex flex-col bg-black">
@@ -37,11 +39,12 @@ const Hub = () => {
                 animate={{ clipPath: 'inset(0 0% 0 0)' }}
                 transition={{ duration: 2, ease: "easeOut" }}
               >
-                Welcome to NeuroNote!
+                Hi,{sessionStorage.getItem("username")}
               </motion.h1>
+              <br />
 
               <motion.h1
-                className="text-xl md:text-2xl font-inter text-white text-center relative z-10"
+                className="text-xl md:text-2xl font-inter text-white text-center relative z-10 "
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 5 }}
@@ -79,7 +82,7 @@ const Hub = () => {
                 initial={{ y: 0, boxShadow: '0px 0px 10px rgba(0,0,0,0.1)' }}
                 whileHover={{ y: -5, boxShadow: '0px 10px 20px rgba(0,0,0,0.2)' }}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
-                className="group w-full sm:w-2/5 md:w-1/4 h-40 md:h-64 rounded-lg flex flex-row md:flex-col justify-between md:justify-center items-center shadow-lg relative overflow-hidden cursor-pointer mx-2 sm:mx-3 md:mx-4 p-3 sm:p-4 md:p-5 mb-4 sm:mb-0 bg-grey-100"
+                className="group w-full sm:w-2/5 md:w-1/4 h-40 md:h-64 rounded-lg flex flex-row md:flex-col justify-between md:justify-center items-center shadow-lg relative overflow-hidden cursor-pointer mx-2 sm:mx-3 md:mx-4 p-3 sm:p-4 md:p-5 mb-4 sm:mb-0 bg-grey-100 mt-25"
               >
                 {/* Background overlay */}
                 <motion.div
