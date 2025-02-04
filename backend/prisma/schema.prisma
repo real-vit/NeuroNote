@@ -10,7 +10,7 @@ datasource db {
 model User {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   username String   @unique
-  email    String   
+  email    String 
   password String
   rooms    RoomUsers[]
 }
@@ -32,14 +32,16 @@ model RoomUsers {
 }
 
 model Note {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  title   String
-  content String
-  tags    String[]
-  userNote Json
-  roomId  String   @db.ObjectId
-  room    Room     @relation("RoomNotes", fields: [roomId], references: [id])
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  title    String
+  content  String
+  tags     String[]
+  AINote   String?  // AI generated note (optional)
+  userNote Json[]   // Store multiple user notes
+  roomId   String   @db.ObjectId @unique  // Room ID should be unique
+  room     Room     @relation("RoomNotes", fields: [roomId], references: [id])
 }
+
 
 
 

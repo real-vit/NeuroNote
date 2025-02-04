@@ -1,34 +1,33 @@
-import { Controller, Get, Post, Param, Body, UseGuards, Request } from '@nestjs/common';
+// src/room/room.controller.ts
+import { Controller, Get, Param, Patch, Body } from '@nestjs/common';
 import { RoomService } from './room.service';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard'; // JWT guard for route protection
 
-@Controller('room')
+@Controller('rooms')
 export class RoomController {
   constructor(private roomService: RoomService) {}
 
-  // Get all rooms a user is part of
-  @UseGuards(JwtAuthGuard)
-  @Get('user/:userId')
-  async getRoomsForUser(@Param('userId') userId: string) {
-    return this.roomService.getRoomsForUser(userId);
+  // GET /rooms/:roomCode
+  // Returns full room details given a room code.
+  @Get(':roomCode')
+  async getRoomDetails(@Param('roomCode') roomCode: string) {
+    return this.roomService.getRoomByCode(roomCode);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Post('create')
-  async createRoom(@Body() body: { name: string }, @Request() req) {
-    const userId = req.user?.sub;  // Access userId instead of sub
-    console.log('Received userId from JWT:', userId);  // Log userId to verify it's extracted correctly
-    
-    if (!userId) {
-      throw new Error('User ID is missing in JWT token');
-    }
-  
-    return this.roomService.createRoom(body.name, userId);  // Pass the userId to the service
+  // GET /rooms/:roomCode/id
+  // Returns only the room ID given a room code.
+  @Get(':roomCode/id')
+  async getRoomId(@Param('roomCode') roomCode: string) {
+    const roomId = await this.roomService.getRoomIdByCode(roomCode);
+    return { roomId };
   }
-  // Get a room by code
-  @UseGuards(JwtAuthGuard)
-  @Get('code/:code')
-  async getRoomByCode(@Param('code') code: string) {
-    return this.roomService.getRoomByCode(code);
+
+  // PATCH /rooms/:roomCode
+  // Update room details (e.g. name or code) given the room code.
+  @Patch(':roomCode')
+  async updateRoom(
+    @Param('roomCode') roomCode: string,
+    @Body() updateData: { name?: string; code?: string },
+  ) {
+    return this.roomService.updateRoomByCode(roomCode, updateData);
   }
 }

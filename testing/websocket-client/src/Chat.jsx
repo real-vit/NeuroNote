@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3003");
+// Create a socket connection to the backend
+const socket = io("http://localhost:3002");
 
 export default function ChatApp() {
   const [roomCode, setRoomCode] = useState("");
@@ -10,29 +11,48 @@ export default function ChatApp() {
   const [messages, setMessages] = useState([]);
   const [joined, setJoined] = useState(false);
 
+  // Listen for messages from the server (join and sendMessage events)
   useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Connected to WebSocket server");
+    });
+
     socket.on("receiveMessage", (data) => {
-      setMessages((prev) => [...prev, `${data.sender}: ${data.message}`]);
+      console.log("Message received:", data); // Debugging log
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        `${data.sender}: ${data.message}`,
+      ]);
     });
 
     socket.on("userJoined", (msg) => {
-      setMessages((prev) => [...prev, msg]);
+      console.log("User joined:", msg); // Debugging log
+      setMessages((prevMessages) => [...prevMessages, msg]);
+    });
+
+    socket.on("error", (error) => {
+      console.error("Error:", error);
     });
 
     return () => {
       socket.off("receiveMessage");
       socket.off("userJoined");
+      socket.off("error");
     };
   }, []);
 
+  // Join a room and start the session
   const joinRoom = () => {
+    console.log("Joining room with code:", roomCode, "and user ID:", userId);
     if (roomCode && userId) {
       socket.emit("joinRoom", { roomCode, userId });
       setJoined(true);
     }
   };
 
+  // Send a message to the room
   const sendMessage = () => {
+    console.log("Sending message:", message); // Debugging log
     if (message && roomCode && userId) {
       socket.emit("sendMessage", { roomCode, userId, message });
       setMessage("");
@@ -84,4 +104,3 @@ export default function ChatApp() {
     </div>
   );
 }
-
