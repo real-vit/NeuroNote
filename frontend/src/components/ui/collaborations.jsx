@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import {Check, Users, Phone, Bold, Italic, Image, Save, Plus, Minus, Mic, Clipboard, X, FileText, Heading } from 'lucide-react';
+import {Sparkles, Check, Users, Phone, Bold, Italic, Image, Save, Plus, Minus, Mic, Clipboard, X, FileText, Heading , Book, Search, BrainCircuit} from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 import { motion } from 'framer-motion';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
@@ -40,8 +40,20 @@ const Collabs = () => {
   { id: 3, name: 'Charlie', online: false },
   ]);
   const [joinCode] = useState('TEAM-' + Math.random().toString(36).substring(2, 7).toUpperCase());
+  const [userId] = useState('user-' + Math.random().toString(36).substring(2, 9));
   const [copySuccess, setCopySuccess] = useState(false);
   const [membersOpen, setMembersOpen] = useState(false);
+  const [showAISidebar, setShowAISidebar] = useState(false);
+
+  const buttonVariants = {
+    hover: {
+      scale: 1.02,
+      transition: { duration: 0.2 }
+    },
+    tap: {
+      scale: 0.98
+    }
+  };
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(joinCode);
@@ -262,12 +274,29 @@ const Collabs = () => {
   };
 
   const handlePushToBigCanvas = () => {
-  if (smallCanvasRef.current && bigCanvasRef.current) {
-    const content = smallCanvasRef.current.innerHTML;
-    bigCanvasRef.current.innerHTML += content;
-    smallCanvasRef.current.innerHTML = ''; // Clear small canvas
-  }
-};
+    if (smallCanvasRef.current && bigCanvasRef.current) {
+      // Get the HTML content from small canvas
+      const smallCanvasContent = smallCanvasRef.current.innerHTML;
+      
+      // Create the JSON object using joinCode instead of roomId
+      const pushData = {
+        userId: userId,
+        roomId: joinCode, // Using joinCode instead of a separate roomId
+        html: smallCanvasContent
+      };
+      
+      // Log the JSON string to console
+      console.log('Push Data:', JSON.stringify(pushData, null, 2));
+      
+      // Continue with the original functionality
+      bigCanvasRef.current.innerHTML += smallCanvasContent;
+      smallCanvasRef.current.innerHTML = ''; // Clear small canvas
+    }
+  };
+
+  const handleSparklesClick = () => {
+    setShowAISidebar(true);
+  };
 
   return (
     <>
@@ -326,6 +355,17 @@ const Collabs = () => {
     onChange={handleFileUpload}
     ref={fileInputRef}
   />
+  <div className="relative flex items-center justify-center">
+      {/* Static Gradient Circle */}
+      <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 absolute" />
+      
+      {/* Button on Top */}
+      <button 
+      className="relative z-10 w-7 h-7 md:w-11 md:h-11 bg-white rounded-full hover:bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 group flex items-center justify-center"
+      onClick={handleSparklesClick}>
+        <Sparkles className="w-4 h-4 md:w-6 md:h-6 text-pink-500 group-hover:text-white" />
+      </button>
+    </div>
 </div>
 
 
@@ -650,6 +690,61 @@ const Collabs = () => {
     </div>
   </motion.div>
 )}
+
+{showAISidebar && (
+          <motion.div
+      initial={{ x: '100%', opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: '100%', opacity: 0 }}
+      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+      className="fixed right-0 top-0 h-full w-80 bg-white shadow-xl border-l border-gray-200 mt-16 overflow-y-auto"
+    >
+      <div className="p-6">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col items-center w-full mt-8">
+            <span className="text-xl text-black font-medium mb-3">Say hi to</span>
+            <span className="text-7xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text tracking-tight">
+              AI
+            </span>
+          </div>
+          <motion.button 
+            whileHover={{ scale: 1.1, rotate: 90 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setShowAISidebar(false)}
+            className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            <X className="w-5 h-5 text-gray-500" />
+          </motion.button>
+        </div>
+
+        {/* Buttons */}
+        <div className="space-y-4">
+          {[
+            { icon: Book, label: 'Summarise', color: 'text-blue-500', gradient: 'from-blue-50 to-blue-100' },
+            { icon: Search, label: 'Find Resources', color: 'text-purple-500', gradient: 'from-purple-50 to-purple-100' },
+            { icon: BrainCircuit, label: 'Generate Quiz', color: 'text-pink-500', gradient: 'from-pink-50 to-pink-100' }
+          ].map(({ icon: Icon, label, color, gradient }) => (
+            <motion.button
+              key={label}
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              className={`w-full p-4 bg-gradient-to-r ${gradient} rounded-xl shadow-sm 
+                         hover:shadow-md transition-shadow duration-200 
+                         flex items-center gap-4 group`}
+            >
+              <div className={`${color} p-2 bg-white rounded-lg shadow-sm 
+                             group-hover:shadow transition-shadow duration-200`}>
+                <Icon className="w-5 h-5" />
+              </div>
+              <span className="text-gray-700 font-medium">{label}</span>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+        )}
     </>
   );
 };

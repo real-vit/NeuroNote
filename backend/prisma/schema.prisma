@@ -10,6 +10,7 @@ datasource db {
 model User {
   id       String   @id @default(auto()) @map("_id") @db.ObjectId
   username String   @unique
+  email    String   
   password String
   rooms    RoomUsers[]
 }
@@ -35,6 +36,7 @@ model Note {
   title   String
   content String
   tags    String[]
+  userNote Json
   roomId  String   @db.ObjectId
   room    Room     @relation("RoomNotes", fields: [roomId], references: [id])
 }

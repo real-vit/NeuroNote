@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bold, Italic, Image, Save, Plus, Minus, Mic, Clipboard, X, FileText, Heading } from 'lucide-react';
+import {Sparkles, Bold, Italic, Image, Save, Plus, Minus, Mic, Clipboard, X, FileText, Heading, Book, Search, BrainCircuit } from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 import { motion } from 'framer-motion';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
@@ -30,6 +30,17 @@ const Canvas = () => {
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
   const workerRef = useRef(null);
+  const [showAISidebar, setShowAISidebar] = useState(false);
+
+  const buttonVariants = {
+    hover: {
+      scale: 1.02,
+      transition: { duration: 0.2 }
+    },
+    tap: {
+      scale: 0.98
+    }
+  };
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -233,6 +244,10 @@ const Canvas = () => {
     }
   };
 
+  const handleSparklesClick = () => {
+    setShowAISidebar(true);
+  };
+
   return (
     <>
     <Navbar/>
@@ -240,41 +255,62 @@ const Canvas = () => {
       {/* Sidebar */}
 
       <div className="mt-16 md:mt-20 fixed top-0 left-0 w-16 md:w-20 bg-gray-100 p-4 space-y-4 border-r border-gray-200 h-screen">
-  <button
-    className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm"
-    onClick={handleSaveAsPDF}
-    title="Save as PDF"
+      <button
+  className="relative w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm group"
+  onClick={handleSaveAsPDF}
+>
+  <Save className="w-4 h-4 md:w-6 md:h-6" />
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto max-w-xs">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    Save as PDF
+  </div>
+</button>
+
+
+
+
+<label className="flex flex-col gap-2 group relative">
+  <div
+    className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
   >
-    <Save className="w-4 h-4 md:w-6 md:h-6" />
-  </button>
+    <Image className="w-4 h-4 md:w-6 md:h-6" />
+  </div>
+  <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    Upload Image
+  </div>
+</label>
 
-  <label className="flex flex-col gap-2">
-    <div
-      className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-      title="Upload Image"
-    >
-      <Image className="w-4 h-4 md:w-6 md:h-6" />
-    </div>
-    <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
-  </label>
-
+<div className="group relative">
   <button
     className={`w-8 h-8 md:w-12 md:h-12 rounded-full transition-colors flex items-center justify-center gap-2 shadow-sm ${
       recording ? 'bg-red-500 text-white' : 'bg-white/50 text-black hover:bg-gray-500 hover:text-white'
     }`}
     onClick={recording ? handleStopRecording : handleStartRecording}
-    title={recording ? 'Stop Recording' : 'Start Recording'}
   >
     <Mic className="w-4 h-4 md:w-6 md:h-6" />
   </button>
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    {recording ? 'Stop Recording' : 'Start Recording'}
+  </div>
+</div>
 
+<div className="group relative">
   <button
     className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
     onClick={() => fileInputRef.current.click()}
-    title="Upload File"
   >
     <FileText className="w-4 h-4 md:w-6 md:h-6" />
   </button>
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    Upload File
+  </div>
+</div>
+
+
   <input
     type="file"
     accept="application/pdf, image/*"
@@ -282,11 +318,18 @@ const Canvas = () => {
     onChange={handleFileUpload}
     ref={fileInputRef}
   />
+  <div className="relative flex items-center justify-center">
+      {/* Static Gradient Circle */}
+      <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 absolute" />
+      
+      {/* Button on Top */}
+      <button 
+      className="relative z-10 w-7 h-7 md:w-11 md:h-11 bg-white rounded-full hover:bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 group flex items-center justify-center"
+      onClick={handleSparklesClick}>
+        <Sparkles className="w-4 h-4 md:w-6 md:h-6 text-pink-500 group-hover:text-white" />
+      </button>
+    </div>
 </div>
-
-
-
-
       {/* Main Content */}
       <div className="flex-1 p-4 ml-20 mt-20">
         {/* Formatting Toolbar */}
@@ -439,6 +482,61 @@ const Canvas = () => {
       )}
     </motion.div>
   )}
+
+  {showAISidebar && (
+          <motion.div
+      initial={{ x: '100%', opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: '100%', opacity: 0 }}
+      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+      className="fixed right-0 top-0 h-full w-80 bg-white shadow-xl border-l border-gray-200 mt-16 overflow-y-auto"
+    >
+      <div className="p-6">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col items-center w-full mt-8">
+            <span className="text-xl text-black font-medium mb-3">Say hi to</span>
+            <span className="text-7xl font-bold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text tracking-tight">
+              AI
+            </span>
+          </div>
+          <motion.button 
+            whileHover={{ scale: 1.1, rotate: 90 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setShowAISidebar(false)}
+            className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            <X className="w-5 h-5 text-gray-500" />
+          </motion.button>
+        </div>
+
+        {/* Buttons */}
+        <div className="space-y-4">
+          {[
+            { icon: Book, label: 'Summarise', color: 'text-blue-500', gradient: 'from-blue-50 to-blue-100' },
+            { icon: Search, label: 'Find Resources', color: 'text-purple-500', gradient: 'from-purple-50 to-purple-100' },
+            { icon: BrainCircuit, label: 'Generate Quiz', color: 'text-pink-500', gradient: 'from-pink-50 to-pink-100' }
+          ].map(({ icon: Icon, label, color, gradient }) => (
+            <motion.button
+              key={label}
+              variants={buttonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              className={`w-full p-4 bg-gradient-to-r ${gradient} rounded-xl shadow-sm 
+                         hover:shadow-md transition-shadow duration-200 
+                         flex items-center gap-4 group`}
+            >
+              <div className={`${color} p-2 bg-white rounded-lg shadow-sm 
+                             group-hover:shadow transition-shadow duration-200`}>
+                <Icon className="w-5 h-5" />
+              </div>
+              <span className="text-gray-700 font-medium">{label}</span>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </motion.div>
+        )}
     </div>
     </>
   );
