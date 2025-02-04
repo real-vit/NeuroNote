@@ -17,13 +17,13 @@ export class AuthController {
   }
 
   // Signup route
-  @Post('signup')
-  async signup(@Body() body: { username: string; password: string }) {
-    const existingUser = await this.authService.findUserByUsername(body.username);
-    if (existingUser) {
-      throw new HttpException('Username already exists', HttpStatus.BAD_REQUEST); // Handle username conflict
-    }
-    const user = await this.authService.signup(body.username, body.password);
-    return this.authService.login(user); // Return token after signup
+@Post('signup')
+async signup(@Body() body: { username: string; password: string; email?: string }) {
+  const existingUser = await this.authService.findUserByUsername(body.username);
+  if (existingUser) {
+    throw new HttpException('Username already exists', HttpStatus.BAD_REQUEST); // Handle username conflict
   }
+  const user = await this.authService.signup(body.username, body.password, body.email);
+  return this.authService.login(user); // Return token after signup
+}
 }
