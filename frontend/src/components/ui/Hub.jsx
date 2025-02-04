@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Navbar from './NavBar.jsx';
 import { useNavigate } from 'react-router-dom';
 import BackgroundLines from './background-lines.jsx';
+import Footer from './Footer.jsx';
 
 
 const Hub = () => {
@@ -13,7 +14,7 @@ const Hub = () => {
     };
 
   const handleRightTopClick = () => {
-    alert('Collab clicked');
+    navigate('/collaborations');
   };
 
   const handleRightBottomClick = () => {
@@ -124,6 +125,7 @@ const Hub = () => {
       </div>
     </BackgroundLines>
     </div>
+    <Footer/>
     </body>
     
   );
