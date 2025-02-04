@@ -1,0 +1,1 @@
+## Inference API for QuillSync (Llama3.2) with SearXNG RAG for Academia

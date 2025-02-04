@@ -1,0 +1,7 @@
+app/__pycache__
+app/models/__pycache__
+app/models/Llama-3.2-3B-Instruct-Q4_K_M.gguf
+app/retrieval/__pycache__
+app/routes/__pycache__
+app/utils/__pycache__
+chroma_db
