@@ -5,12 +5,15 @@ import { motion } from 'framer-motion';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { createWorker } from 'tesseract.js';
 import Navbar from './NavBar.jsx';
+import { useNavigate } from 'react-router-dom';
+
 
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 
 const Canvas = () => {
+  const navigate = useNavigate();
   const [fontSize, setFontSize] = useState(16);
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
@@ -520,29 +523,36 @@ const Canvas = () => {
         </div>
 
         {/* Buttons */}
-        <div className="space-y-4">
-          {[
-            { icon: Book, label: 'Summarise', color: 'text-blue-500', gradient: 'from-blue-50 to-blue-100' },
-            { icon: Search, label: 'Find Resources', color: 'text-purple-500', gradient: 'from-purple-50 to-purple-100' },
-            { icon: BrainCircuit, label: 'Generate Quiz', color: 'text-pink-500', gradient: 'from-pink-50 to-pink-100' }
-          ].map(({ icon: Icon, label, color, gradient }) => (
-            <motion.button
-              key={label}
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-              className={`w-full p-4 bg-gradient-to-r ${gradient} rounded-xl shadow-sm 
-                         hover:shadow-md transition-shadow duration-200 
-                         flex items-center gap-4 group`}
-            >
-              <div className={`${color} p-2 bg-white rounded-lg shadow-sm 
-                             group-hover:shadow transition-shadow duration-200`}>
-                <Icon className="w-5 h-5" />
-              </div>
-              <span className="text-gray-700 font-medium">{label}</span>
-            </motion.button>
-          ))}
-        </div>
+                <div className="space-y-4">
+              {[
+                { icon: Book, label: "Summarise", color: "text-blue-500", gradient: "from-blue-50 to-blue-100" },
+                { icon: Search, label: "Find Resources", color: "text-purple-500", gradient: "from-purple-50 to-purple-100" },
+                { 
+                  icon: BrainCircuit, 
+                  label: "Generate Quiz", 
+                  color: "text-pink-500", 
+                  gradient: "from-pink-50 to-pink-100", 
+                  onClick: () => navigate("/quiz") // Ensure this is included
+                }
+              ].map(({ icon: Icon, label, color, gradient, onClick }) => (
+                <motion.button
+                  key={label}
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  onClick={onClick} 
+                  className={`w-full p-4 bg-gradient-to-r ${gradient} rounded-xl shadow-sm 
+                             hover:shadow-md transition-shadow duration-200 
+                             flex items-center gap-4 group`}
+                >
+                  <div className={`${color} p-2 bg-white rounded-lg shadow-sm 
+                                   group-hover:shadow transition-shadow duration-200`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <span className="text-gray-700 font-medium">{label}</span>
+                </motion.button>
+              ))}
+            </div>
       </div>
     </motion.div>
         )}
