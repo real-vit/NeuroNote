@@ -16,7 +16,7 @@ import { JwtService } from '@nestjs/jwt';
 import { GatewayModule } from './modules/gateway/gateway.module';
 
 @Module({
-  imports: [NoteModule, UserModule, RoomModule, AuthModule,ConfigModule.forRoot(),PrismaModule, GatewayModule],
+  imports: [NoteModule, UserModule, RoomModule, AuthModule,ConfigModule.forRoot(),PrismaModule, GatewayModule,NoteModule],
   controllers: [AppController, UserController, RoomController],
   providers: [AppService, UserService, RoomService,PrismaService,JwtService],
 })
