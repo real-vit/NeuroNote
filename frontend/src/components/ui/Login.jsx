@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import GOOGLE_ICON from "../../assets/google_logo.svg";
+
 import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 
@@ -11,13 +11,15 @@ const Login = () => {
     const [error, setError] = useState("");
 
     const handleLogin = async (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault(); 
 
-        // Prepare the login request body
+        
         const loginData = {
             username,
             password,
         };
+
+
 
         try {
             const response = await fetch("http://localhost:4000/auth/login", {
@@ -34,10 +36,11 @@ const Login = () => {
 
             const data = await response.json();
 
-            // Store the access token in localStorage
+            
             localStorage.setItem("accessToken", data.access_token);
+            sessionStorage.setItem("username",loginData.username);
 
-            // Navigate to a different page on successful login (e.g., Dashboard)
+            
             navigate("/");
         } catch (error) {
             console.error("Login Error:", error);
@@ -47,9 +50,9 @@ const Login = () => {
 
     return (
         <div className="min-h-screen flex flex-col">
-            {/* Main Content */}
+            
             <div className="flex-grow flex">
-                {/* Left Side */}
+                
                 <div className="relative bg-black w-1/2 flex flex-col">
                     <div className="absolute top-[20%] left-[10%] flex flex-col">
                         <h1 className="max-w-[500px] text-3xl text-white font-bold py-2 cursor-pointer"
@@ -68,16 +71,16 @@ const Login = () => {
                     </div>
                 </div>
 
-                {/* Right Side */}
+                
                 <div className="w-1/2 bg-[#f5f5f5] flex flex-col p-10 justify-center items-center">
-                    {/* Login Form */}
+                    
                     <form onSubmit={handleLogin} className="w-full flex flex-col max-w-[500px] py-10">
                         <div className="w-full flex flex-col">
                             <h3 className="text-2xl font-semibold mb-4">Login</h3>
                             <p className="text-sm mb-2">Welcome Back! Please enter your details.</p>
                         </div>
 
-                        {/* Input Fields */}
+                        
                         <div className="w-full flex flex-col">
                             <input
                                 type="username"
@@ -95,17 +98,16 @@ const Login = () => {
                             />
                         </div>
 
-                        {/* Error Message */}
+                        
                         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
-                        {/* Remember Me and Forgot Password */}
                         <div className="w-full flex items-center justify-between">
                             <p className="text-sm font-medium cursor-pointer underline">
                                 Forgot password?
                             </p>
                         </div>
 
-                        {/* Login and Register Buttons */}
+                        
                         <div className="w-full flex flex-col my-4 gap-4">
                             <button type="submit" className="w-full text-white bg-black border border-black rounded-2xl p-3 text-center cursor-pointer">
                                 Login
@@ -113,7 +115,7 @@ const Login = () => {
                             <button
                                 type="button"
                                 className="w-full text-black bg-white border border-black rounded-2xl p-3 text-center cursor-pointer"
-                                onClick={() => navigate('/Register')} // Navigate to Register Page
+                                onClick={() => navigate('/Register')} 
                             >
                                 Register
                             </button>
@@ -123,7 +125,7 @@ const Login = () => {
 
                     </form>
 
-                    {/* Sign Up Prompt */}
+                    
                     <div className="w-full flex items-center justify-center">
                         <p className="text-sm text-black">
                             Don't have an account?{" "}
@@ -135,7 +137,7 @@ const Login = () => {
                 </div>
             </div>
 
-            {/* Footer Component */}
+            
             <Footer />
         </div>
     );

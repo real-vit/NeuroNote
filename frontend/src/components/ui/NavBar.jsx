@@ -35,8 +35,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white text-black shadow-md fixed w-full top-0 left-0 z-50">
-      <div className="container mx-auto flex justify-between items-center px-4 py-3">
+    <nav className="bg-gray-300 text-black shadow-md fixed w-full top-0 left-0 z-50">
+      <div className="container mx-auto flex justify-between items-center px-4 py-2">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
