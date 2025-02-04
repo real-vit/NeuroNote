@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
-    const navigate=useNavigate();
-    
+    const navigate = useNavigate();
+
     return (
         <div className="w-full h-screen flex flex-col">
             <div className="w-full h-full flex items-start">
@@ -27,7 +27,7 @@ const Login = () => {
 
                 {/* Right Side */}
                 <div className="w-1/2 h-full bg-[#f5f5f5] flex flex-col p-10 justify-center items-center">
-                    
+
 
                     {/* Login Form */}
                     <div className="w-full flex flex-col max-w-[500px] py-10">
@@ -52,7 +52,7 @@ const Login = () => {
 
                         {/* Remember Me and Forgot Password */}
                         <div className="w-full flex items-center justify-between">
-                            
+
                             <p className="text-sm font-medium cursor-pointer underline">
                                 Forgot password?
                             </p>
