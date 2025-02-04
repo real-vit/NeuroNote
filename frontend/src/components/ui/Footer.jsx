@@ -7,7 +7,7 @@ const Footer = () => {
   return (
       <footer className="w-full bg-gray-800 py-4 shadow-2xl">
           <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between px-6">
-              <p className="text-sm text-white">© {new Date().getFullYear()} NeuroNote™. All rights reserved.</p>
+              <p className="text-sm text-white">© {new Date().getFullYear()} QuillSync™. All rights reserved.</p>
               <div className="flex space-x-4 mt-2 md:mt-0">
                   <a href="#" className="text-sm text-white hover:underline">About</a>
                   <a href="#" className="text-sm text-white hover:underline">Privacy Policy</a>
