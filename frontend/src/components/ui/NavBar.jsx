@@ -72,7 +72,7 @@ const Navbar = () => {
               >
                 <span className="relative z-10 text-gray-700 group-hover:text-white transition-colors duration-300"
                 onClick={handleClick}>
-                  Try Now
+                  Login
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-white to-gray-100"></div>
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-600 to-gray-900 translate-x-full group-hover:translate-x-0 transition-transform duration-500"></div>

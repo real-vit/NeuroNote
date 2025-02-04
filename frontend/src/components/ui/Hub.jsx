@@ -110,7 +110,7 @@ const Hub = () => {
 
           <button
             onClick={handleRightBottomClick}
-            className="group w-1/3 h-4/5 rounded-lg flex flex-col justify-center items-center shadow-lg transition-transform hover:scale-105 bg-white relative overflow-hidden cursor-pointer"
+            className="group w-1/3- h-4/5 rounded-lg flex flex-col justify-center items-center shadow-lg transition-transform hover:scale-105 bg-white relative overflow-hidden cursor-pointer"
           >
             <motion.p
               className="text-2xl font-bold text-black text-center relative z-10 pointer-events-none"
