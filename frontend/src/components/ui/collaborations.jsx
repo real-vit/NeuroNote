@@ -1,30 +1,42 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bold, Italic, Image, Save, Plus, Minus, Mic, Clipboard, X, FileText, Heading } from 'lucide-react';
+import { 
+  Bold, Italic, Image, Save, Plus, Minus, Mic, Clipboard, X, FileText, Heading, Users, Phone, MessageCircle, Send 
+} from 'lucide-react';
 import html2pdf from 'html2pdf.js';
 import { motion } from 'framer-motion';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { createWorker } from 'tesseract.js';
 import Navbar from './NavBar.jsx';
 
-
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 
-const Canvas = () => {
+const Collabs = () => {
+
   const [fontSize, setFontSize] = useState(16);
   const [isBold, setIsBold] = useState(false);
   const [isItalic, setIsItalic] = useState(false);
-  const[isHeading, setIsHeading] = useState(false);
+  const [isHeading, setIsHeading] = useState(false);
   const [recording, setRecording] = useState(false);
   const [recordedText, setRecordedText] = useState('');
   const [showSidebar, setShowSidebar] = useState(false);
   const [showUploadSidebar, setShowUploadSidebar] = useState(false);
+  const [showTeamSidebar, setShowTeamSidebar] = useState(false);
   const [uploadedText, setUploadedText] = useState('');
   const [elapsedTime, setElapsedTime] = useState(0);
+  const [teamMembers, setTeamMembers] = useState([
+    { id: 1, name: 'Alice', online: true },
+    { id: 2, name: 'Bob', online: true },
+    { id: 3, name: 'Charlie', online: false },
+    { id: 4, name: 'David', online: true }
+  ]);
+  const [chatMessage, setChatMessage] = useState('');
+  const [chatMessages, setChatMessages] = useState([]);
+
   const timerRef = useRef(null);
-  const canvasRef = useRef(null);
+  const canvasRef1 = useRef(null);
+  const canvasRef2 = useRef(null);
   const recognitionRef = useRef(null);
-  const sidebarRef = useRef(null);
   const fileInputRef = useRef(null);
   const [ocrProgress, setOcrProgress] = useState(0);
   const [processing, setProcessing] = useState(false);
@@ -32,8 +44,12 @@ const Canvas = () => {
   const workerRef = useRef(null);
 
   useEffect(() => {
-    if (canvasRef.current) {
-      canvasRef.current.style.fontSize = `${fontSize}px`;
+    if (canvasRef1.current) {
+      canvasRef1.current.style.fontSize = `${fontSize}px`;
+      document.execCommand('defaultParagraphSeparator', false, 'p');
+    }
+    if (canvasRef2.current) {
+      canvasRef2.current.style.fontSize = `${fontSize}px`;
       document.execCommand('defaultParagraphSeparator', false, 'p');
     }
   }, []);
@@ -80,7 +96,7 @@ const Canvas = () => {
   };
 
   const handleSaveAsPDF = () => {
-    const canvasContent = canvasRef.current;
+    const canvasContent = canvasRef1.current;
     const options = {
       margin: 10,
       filename: 'canvas.pdf',
@@ -92,9 +108,40 @@ const Canvas = () => {
     html2pdf().from(canvasContent).set(options).save();
   };
 
+  const handlePushToMainCanvas = () => {
+    // Get text from smaller canvas
+    const smallerCanvasText = canvasRef2.current.innerText;
+    
+    // Append text to the larger canvas
+    if (canvasRef1.current && smallerCanvasText.trim() !== '') {
+      const textNode = document.createTextNode(smallerCanvasText);
+      const br = document.createElement('br');
+      
+      canvasRef1.current.appendChild(textNode);
+      canvasRef1.current.appendChild(br);
+
+      // Optional: Clear smaller canvas after pushing
+      canvasRef2.current.innerHTML = '';
+    }
+  };
+
+  const handleSendChatMessage = () => {
+    if (chatMessage.trim() === '') return;
+
+    const newMessage = {
+      id: chatMessages.length + 1,
+      text: chatMessage,
+      sender: 'You',
+      timestamp: new Date().toLocaleTimeString()
+    };
+
+    setChatMessages([...chatMessages, newMessage]);
+    setChatMessage('');
+  };
+
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
-    if (file && canvasRef.current) {
+    if (file && canvasRef1.current) {
       const reader = new FileReader();
       reader.onload = (event) => {
         const img = document.createElement('img');
@@ -102,10 +149,10 @@ const Canvas = () => {
         img.className = 'max-w-full h-auto my-2';
         img.alt = 'uploaded';
 
-        canvasRef.current.appendChild(img);
+        canvasRef1.current.appendChild(img);
 
         const br = document.createElement('br');
-        canvasRef.current.appendChild(br);
+        canvasRef1.current.appendChild(br);
       };
       reader.readAsDataURL(file);
     }
@@ -152,12 +199,12 @@ const Canvas = () => {
   };
 
   const handlePasteRecordedText = () => {
-    if (canvasRef.current && recordedText) {
+    if (canvasRef1.current && recordedText) {
       const textNode = document.createTextNode(recordedText);
-      canvasRef.current.appendChild(textNode);
+      canvasRef1.current.appendChild(textNode);
 
       const br = document.createElement('br');
-      canvasRef.current.appendChild(br);
+      canvasRef1.current.appendChild(br);
     }
   };
 
@@ -225,11 +272,11 @@ const Canvas = () => {
   };
 
   const handlePasteExtractedText = () => {
-    if (canvasRef.current && uploadedText) {
+    if (canvasRef1.current && uploadedText) {
       const textNode = document.createTextNode(uploadedText);
-      canvasRef.current.appendChild(textNode);
+      canvasRef1.current.appendChild(textNode);
       const br = document.createElement('br');
-      canvasRef.current.appendChild(br);
+      canvasRef1.current.appendChild(br);
     }
   };
 
@@ -239,7 +286,15 @@ const Canvas = () => {
     <div className="flex h-screen">
       {/* Sidebar */}
 
-      <div className="mt-16 md:mt-20 fixed top-0 left-0 w-16 md:w-20 bg-gray-100 p-4 space-y-4 border-r border-gray-200 h-screen">
+      <div className="mt-16 md:mt-20 fixed top-0 left-0 w-16 md:w-20 bg-black p-4 space-y-4 border-r border-gray-200 h-screen">
+  <button
+          className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-green-500 text-white hover:bg-green-600 transition-colors flex items-center justify-center gap-2 shadow-sm"
+          onClick={() => setShowTeamSidebar(true)}
+          title="My Team"
+        >
+          <Users className="w-4 h-4 md:w-6 md:h-6" />
+        </button>
+  
   <button
     className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm"
     onClick={handleSaveAsPDF}
@@ -327,7 +382,7 @@ const Canvas = () => {
 
         {/* Canvas Area */}
         <div
-          ref={canvasRef}
+          ref={canvasRef1}
           className="w-full min-h-[500px] p-2 md:p-4 border rounded-lg bg-white shadow-sm focus:outline-none"
           contentEditable
           suppressContentEditableWarning
@@ -444,4 +499,4 @@ const Canvas = () => {
   );
 };
 
-export default Canvas;
+export default Collabs;

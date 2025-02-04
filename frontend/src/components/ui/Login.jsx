@@ -6,9 +6,11 @@ const colors = {
     background: "#E0E0E0",
     disabled: "#D9D9D9",
 };
+import Footer from './Footer.jsx';
 
 const Login = () => {
     return (
+        <>
         <div className="w-full h-screen flex items-start">
             {/* Left Side */}
             <div className="relative bg-black w-1/2 h-full flex flex-col">
@@ -43,21 +45,17 @@ const Login = () => {
                         <input
                             type="email"
                             placeholder="Email"
-                            className="w-full text-black py-4 my-4 bg-transparent border-b border-black outline-none focus:outline-none"
+                            className="w-full text-black py-1 my-2 bg-transparent border-b border-black outline-none focus:outline-none"
                         />
                         <input
                             type="password"
                             placeholder="Password"
-                            className="w-full text-black py-4 my-4 bg-transparent border-b border-black outline-none focus:outline-none"
+                            className="w-full text-black py-1 my-1 bg-transparent border-b border-black outline-none focus:outline-none"
                         />
                     </div>
 
                     {/* Remember Me and Forgot Password */}
                     <div className="w-full flex items-center justify-between">
-                        <div className="w-full flex items-center">
-                            <input type="checkbox" className="w-4 h-4 mr-2" />
-                            <p className="text-sm">Remember me for 30 days</p>
-                        </div>
                         <p className="text-sm font-medium whitespace-nowrap cursor-pointer underline underline-offset-2">
                             Forgot password?
                         </p>
@@ -95,8 +93,12 @@ const Login = () => {
                         </span>
                     </p>
                 </div>
+                <Footer />
             </div>
+            
         </div>
+        
+        </>
     );
 };
 
