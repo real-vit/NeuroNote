@@ -1,41 +1,60 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import GOOGLE_ICON from "../../assets/google_logo.svg";
+
 
 const Register = () => {
     const navigate = useNavigate();
 
-    // State for form inputs and error handling
+    
     const [username, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [error, setError] = useState("");
 
-    // Handle form submission
+    
     const handleRegister = async (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
 
-        // Validate inputs
-        if (!username || !email || !password || !confirmPassword) {
-            setError("All fields are required.");
+        // Trim inputs to remove leading/trailing spaces
+        const trimmedUsername = username.trim();
+        const trimmedEmail = email.trim();
+        const trimmedPassword = password.trim();
+        const trimmedConfirmPassword = confirmPassword.trim();
+
+        // Basic Validation
+        if (!trimmedUsername || !trimmedEmail || !trimmedPassword || !trimmedConfirmPassword) {
+            setError("All fields are required and cannot be empty or contain only spaces.");
             return;
         }
 
-        if (password !== confirmPassword) {
+        // Email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(trimmedEmail)) {
+            setError("Please enter a valid email address.");
+            return;
+        }
+
+        // Password length validation
+        if (trimmedPassword.length < 6) {
+            setError("Password must be at least 6 characters long.");
+            return;
+        }
+
+        // Confirm password validation
+        if (trimmedPassword !== trimmedConfirmPassword) {
             setError("Passwords do not match.");
             return;
         }
 
-        // Prepare the registration request body
+        // Prepare Data
         const registerData = {
-            email,
-            username,
-            password,
+            username: trimmedUsername,
+            email: trimmedEmail,
+            password: trimmedPassword,
         };
 
         try {
-            // Send POST request to the backend API
             const response = await fetch("http://localhost:4000/auth/signup", {
                 method: "POST",
                 headers: {
@@ -51,21 +70,22 @@ const Register = () => {
 
             const data = await response.json();
 
-            // Store the access token in localStorage
+            // Store access token
             localStorage.setItem("accessToken", data.access_token);
 
-            // Navigate to the dashboard or login page
-            navigate("/login"); // or navigate("/login");
+            // Redirect to login page
+            navigate("/login");
         } catch (error) {
             console.error("Registration Error:", error);
             setError(error.message || "An error occurred during registration.");
         }
     };
+    
 
     return (
         <div className="w-full h-screen flex flex-col">
             <div className="w-full h-full flex items-start">
-                {/* Left Side (Same as Login) */}
+                
                 <div className="relative bg-black w-1/2 h-full flex flex-col">
                     <div className="absolute top-[20%] left-[10%] flex flex-col">
                         <h1 className="max-w-[500px] text-3xl text-white font-bold py-2">
@@ -82,16 +102,16 @@ const Register = () => {
                     </div>
                 </div>
 
-                {/* Right Side (Register Form) */}
+                
                 <div className="w-1/2 h-full bg-[#f5f5f5] flex flex-col p-10 justify-center items-center">
                     <form onSubmit={handleRegister} className="w-full flex flex-col max-w-[500px] py-10">
                         <h3 className="text-2xl font-semibold mb-4">Register</h3>
                         <p className="text-sm mb-2">Create your account and start exploring.</p>
 
-                        {/* Error Message */}
+                        
                         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
-                        {/* Input Fields */}
+                       
                         <input
                             type="text"
                             placeholder="Username"
@@ -121,7 +141,7 @@ const Register = () => {
                             className="w-full text-black py-4 my-2 bg-transparent border-b border-black outline-none"
                         />
 
-                        {/* Register Button */}
+                        
                         <button
                             type="submit"
                             className="w-full text-white bg-black border border-black rounded-2xl p-3 text-center my-4 cursor-pointer"
@@ -129,18 +149,18 @@ const Register = () => {
                             Register
                         </button>
 
-                        {/* Sign In Link */}
+                        
                         <p className="text-sm text-black text-center mt-4">
                             Already have an account?{" "}
                             <Link to="/login" className="font-semibold underline cursor-pointer">
                                 Sign In
                             </Link>
                         </p>
-                    </form>
+                    </form>     
                 </div>
             </div>
 
-            {/* Footer Component */}
+            
             <Footer />
         </div>
     );
