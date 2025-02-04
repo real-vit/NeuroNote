@@ -28,26 +28,32 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { username: user.username, sub: user.id };
-    // Ensure that the secret used here is the same as the one used for verifying the token
+    
     const token = await this.jwtService.signAsync(payload, {
-      secret: process.env.JWT_SECRET || 'your-secret-key',  // Secret key should be the same for both signing and verifying
+      secret: process.env.JWT_SECRET || 'your-secret-key',
       expiresIn: '1h',
     });
-    return { access_token: token };
+  
+    return { 
+      access_token: token,
+      userId: user.id // Include userId in the response
+    };
   }
-  // Signup user and hash password
-  async signup(username: string, password: string) {
+  
+  async signup(username: string, password: string, email?: string) {
     const existingUser = await this.findUserByUsername(username);
     if (existingUser) {
       throw new ConflictException('Username already exists');
     }
-
+  
     const hashedPassword = await bcrypt.hash(password, 10);
     return this.prisma.user.create({
       data: {
         username,
         password: hashedPassword,
+        email: email!, // Use null if email is undefined
       },
     });
   }
+  
 }
