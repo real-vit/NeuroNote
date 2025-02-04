@@ -2,24 +2,28 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader2, ArrowLeft } from 'lucide-react';
 import Footer from './Footer';
+import Navbar from './NavBar';
 
 const CollaborationLanding = () => {
   const [roomId, setRoomId] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isJoinLoading, setIsJoinLoading] = useState(false);  
+  const [isCreateLoading, setIsCreateLoading] = useState(false);  
   const navigate = useNavigate();
 
   const handleJoinRoom = () => {
     if (!roomId.trim()) return;
-    setIsLoading(true);
+    setIsJoinLoading(true);
     setTimeout(() => {
       navigate('/collab-canvas');
     }, 1500);
   };
+  
 
   return (
     <>
+    <Navbar/>
     <div className="min-h-screen bg-gray-50 py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md mx-auto space-y-6">
+      <div className="max-w-md mx-auto space-y-6 mt-15">
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
@@ -40,11 +44,11 @@ const CollaborationLanding = () => {
         </div>
 
         {/* Placeholder Image */}
-        <div className="aspect-video rounded-lg bg-gray-200 flex items-center justify-center">
+        <div className="aspect-video rounded-lg bg-gray-50 flex items-center justify-center">
           <img 
-            src="/api/placeholder/400/225" 
+            src="/src/assets/Five.svg" 
             alt="Collaboration" 
-            className="rounded-lg"
+            className="rounded-lg w-54 h-54"
           />
         </div>
 
@@ -55,16 +59,16 @@ const CollaborationLanding = () => {
             value={roomId}
             onChange={(e) => setRoomId(e.target.value)}
             placeholder="Enter Room ID"
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            disabled={isLoading}
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black-500  focus:border-transparent"
+            disabled={isJoinLoading || isCreateLoading}
           />
           
           <button
             onClick={handleJoinRoom}
-            disabled={isLoading || !roomId.trim()}
-            className="w-full bg-blue-600 text-white py-2 px-3 text-sm rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            disabled={isJoinLoading || !roomId.trim()}
+            className="w-full bg-black text-white py-2 px-3 text-sm rounded-md font-medium  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black-500 disabled:bg-gray-400 disabled:text-gray-500 disabled:opacity-100 disabled:cursor-not-allowed transition-colors duration-200"
           >
-            {isLoading ? (
+            {isJoinLoading ? (
               <span className="flex items-center justify-center gap-2">
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Connecting now...
@@ -73,16 +77,35 @@ const CollaborationLanding = () => {
               'JOIN A ROOM'
             )}
           </button>
+          <button
+  onClick={() => {
+    setIsCreateLoading(true);  
+    setTimeout(() => {
+      navigate('/collab-canvas');
+    }, 1500);  
+  }}
+  disabled={isCreateLoading}  
+  className="w-full bg-black text-white py-2 px-3 text-sm rounded-md font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black-500"
+>
+  {isCreateLoading ? (
+    <span className="flex items-center justify-center gap-2">
+      <Loader2 className="w-4 h-4 animate-spin" />
+      Creating room...
+    </span>
+  ) : (
+    'CREATE A ROOM'
+  )}
+</button>
+
+
         </div>
 
         {/* Footer */}
         
       </div>
-      
     </div>
     <Footer />
     </>
-    
   );
 };
 
