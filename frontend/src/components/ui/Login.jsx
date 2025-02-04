@@ -1,19 +1,21 @@
 import React from "react";
 import GOOGLE_ICON from "../../assets/google_logo.svg";
 import { useNavigate } from "react-router-dom";
-
+import Footer from "./Footer";
 
 const Login = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="w-full h-screen flex flex-col">
-            <div className="w-full h-full flex items-start">
+        <div className="min-h-screen flex flex-col">
+            {/* Main Content */}
+            <div className="flex-grow flex">
                 {/* Left Side */}
-                <div className="relative bg-black w-1/2 h-full flex flex-col">
+                <div className="relative bg-black w-1/2 flex flex-col">
                     <div className="absolute top-[20%] left-[10%] flex flex-col">
-                        <h1 className="max-w-[500px]  text-3xl text-white font-bold py-2"
-                            style={{ fontFamily: "'Iter', sans-serif" }}>
+                        <h1 className="max-w-[500px] text-3xl text-white font-bold py-2 cursor-pointer"
+                            style={{ fontFamily: "'Iter', sans-serif" }}
+                            onClick={() => navigate('/')}>
                             NeuroNote
                         </h1>
                         <h1 className="text-4xl text-white font-bold my-4">
@@ -26,9 +28,7 @@ const Login = () => {
                 </div>
 
                 {/* Right Side */}
-                <div className="w-1/2 h-full bg-[#f5f5f5] flex flex-col p-10 justify-center items-center">
-
-
+                <div className="w-1/2 bg-[#f5f5f5] flex flex-col p-10 justify-center items-center">
                     {/* Login Form */}
                     <div className="w-full flex flex-col max-w-[500px] py-10">
                         <div className="w-full flex flex-col">
@@ -52,7 +52,6 @@ const Login = () => {
 
                         {/* Remember Me and Forgot Password */}
                         <div className="w-full flex items-center justify-between">
-
                             <p className="text-sm font-medium cursor-pointer underline">
                                 Forgot password?
                             </p>
@@ -70,7 +69,6 @@ const Login = () => {
                                 Register
                             </button>
                         </div>
-
 
                         {/* Divider */}
                         <div className="w-full flex items-center justify-center relative py-4">
@@ -100,23 +98,6 @@ const Login = () => {
             {/* Footer Component */}
             <Footer />
         </div>
-    );
-};
-
-
-const Footer = () => {
-    return (
-        <footer className="w-full bg-gray-800 py-6 shadow-2xl">
-            <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between px-6">
-                <p className="text-sm text-white">© {new Date().getFullYear()} NeuroNote™. All rights reserved.</p>
-                <div className="flex space-x-4 mt-2 md:mt-0">
-                    <a href="#" className="text-sm text-white hover:underline">About</a>
-                    <a href="#" className="text-sm text-white hover:underline">Privacy Policy</a>
-                    <a href="#" className="text-sm text-white hover:underline">Licensing</a>
-                    <a href="#" className="text-sm text-white hover:underline">Github</a>
-                </div>
-            </div>
-        </footer>
     );
 };
 

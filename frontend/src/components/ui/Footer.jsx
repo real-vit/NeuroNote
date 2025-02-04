@@ -5,12 +5,17 @@ import { FaGithub, FaInstagram, FaTwitter, FaEnvelope, FaLinkedinIn } from "reac
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-4">
-      <div className="container mx-auto px-4 flex flex-col justify-center items-center space-y-4">
-        {/* Footer Text */}
-        <p className="text-center">Made for DEVSOC 2025 - Team Real</p>
-      </div>
-    </footer>
+      <footer className="w-full bg-gray-800 py-4 shadow-2xl">
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between px-6">
+              <p className="text-sm text-white">© {new Date().getFullYear()} NeuroNote™. All rights reserved.</p>
+              <div className="flex space-x-4 mt-2 md:mt-0">
+                  <a href="#" className="text-sm text-white hover:underline">About</a>
+                  <a href="#" className="text-sm text-white hover:underline">Privacy Policy</a>
+                  <a href="#" className="text-sm text-white hover:underline">Licensing</a>
+                  <a href="#" className="text-sm text-white hover:underline">Github</a>
+              </div>
+          </div>
+      </footer>
   );
 };
 
