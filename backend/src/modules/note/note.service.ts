@@ -69,6 +69,7 @@ export class NoteService {
     if (research && note.AINote) {
       combinedText += `\n\nAI Note: ${note.AINote}`;
     }
+    
 
     const response = await firstValueFrom(
         this.httpService.post(

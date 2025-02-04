@@ -1,43 +1,69 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody, ConnectedSocket, OnGatewayInit } from '@nestjs/websockets';
+import { 
+  WebSocketGateway, 
+  SubscribeMessage, 
+  MessageBody, 
+  ConnectedSocket, 
+  OnGatewayInit, 
+  OnGatewayConnection, 
+  OnGatewayDisconnect 
+} from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
 
-@WebSocketGateway(3002)  // Specify the port here
-export class MyGateway implements OnGatewayInit {
+@WebSocketGateway({
+  cors: {
+    origin: 'http://localhost:5173', // Allow frontend origin
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  }
+})
+export class MyGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+  private server: Server;
 
-  private server: Server;  // Declare the server instance
-
-  // After gateway initialization, assign the server instance
   afterInit(server: Server) {
     this.server = server;
     console.log('WebSocket Gateway initialized');
+    // setInterval(() => {
+    //   this.server.emit('receiveMessage',{
+    //     sender: 'server',
+    //     message: 'Testing from Server',
+    //   });
+    //   console.log("Sending Test Broadcast")
+    // }, 10000);
   }
 
-  // Handle client joining a room
+  handleConnection(client: Socket) {
+    console.log(`Client connected: ${client.id}`);
+  }
+
+  handleDisconnect(client: Socket) {
+    console.log(`Client disconnected: ${client.id}`);
+  }
+
   @SubscribeMessage('joinRoom')
   handleJoinRoom(
-    @MessageBody() data: { roomCode: string, userId: string },  // Room code and userId from the client
-    @ConnectedSocket() client: Socket  // The client that sent the message
+    @MessageBody() data: { roomCode: string, userId: string },
+    @ConnectedSocket() client: Socket
   ) {
     const { roomCode, userId } = data;
 
-    // If the room doesn't exist or the roomCode is empty, send an error
     if (!roomCode) {
       client.emit('error', 'Room code is required');
       return;
     }
 
-    // Join the specified room
     client.join(roomCode);
-    console.log(`Client ${userId} joined room: ${roomCode}`);
+    console.log(`Client ${userId} joined room: ${roomCode}`); // Log user joining the room
 
-    // Emit a message to all users in the room that a new user has joined
+    // Log the join event and broadcast to the room
     this.server.to(roomCode).emit('userJoined', `${userId} has joined the room: ${roomCode}`);
+    console.log(`Broadcasted to room ${roomCode}: ${userId} has joined`);
   }
 
   @SubscribeMessage('sendMessage')
   handleSendMessage(
-    @MessageBody() data: { message: string, roomCode: string, userId: string },  // Message, room code, and userId from the client
-    @ConnectedSocket() client: Socket  // The client that sent the message
+    @MessageBody() data: { message: string, roomCode: string, userId: string },
+    @ConnectedSocket() client: Socket
   ) {
     const { message, roomCode, userId } = data;
 
@@ -46,9 +72,13 @@ export class MyGateway implements OnGatewayInit {
       return;
     }
 
-    this.server.to(roomCode).emit('receiveMessage', {
-      sender: userId,
-      message: message,
-    });
+    // Log the message received from client
+    console.log(`Received message from ${userId} in room ${roomCode}: ${message}`);
+
+    // Broadcast the message to everyone in the room
+    this.server.to(roomCode).emit('receiveMessage', { sender: userId, message });
+
+    console.log(`Broadcasted message to room ${roomCode}: ${message}`);
   }
+  
 }
