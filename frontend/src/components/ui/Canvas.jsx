@@ -255,41 +255,62 @@ const Canvas = () => {
       {/* Sidebar */}
 
       <div className="mt-16 md:mt-20 fixed top-0 left-0 w-16 md:w-20 bg-gray-100 p-4 space-y-4 border-r border-gray-200 h-screen">
-  <button
-    className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm"
-    onClick={handleSaveAsPDF}
-    title="Save as PDF"
+      <button
+  className="relative w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 shadow-sm group"
+  onClick={handleSaveAsPDF}
+>
+  <Save className="w-4 h-4 md:w-6 md:h-6" />
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto max-w-xs">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    Save as PDF
+  </div>
+</button>
+
+
+
+
+<label className="flex flex-col gap-2 group relative">
+  <div
+    className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
   >
-    <Save className="w-4 h-4 md:w-6 md:h-6" />
-  </button>
+    <Image className="w-4 h-4 md:w-6 md:h-6" />
+  </div>
+  <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    Upload Image
+  </div>
+</label>
 
-  <label className="flex flex-col gap-2">
-    <div
-      className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
-      title="Upload Image"
-    >
-      <Image className="w-4 h-4 md:w-6 md:h-6" />
-    </div>
-    <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
-  </label>
-
+<div className="group relative">
   <button
     className={`w-8 h-8 md:w-12 md:h-12 rounded-full transition-colors flex items-center justify-center gap-2 shadow-sm ${
       recording ? 'bg-red-500 text-white' : 'bg-white/50 text-black hover:bg-gray-500 hover:text-white'
     }`}
     onClick={recording ? handleStopRecording : handleStartRecording}
-    title={recording ? 'Stop Recording' : 'Start Recording'}
   >
     <Mic className="w-4 h-4 md:w-6 md:h-6" />
   </button>
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    {recording ? 'Stop Recording' : 'Start Recording'}
+  </div>
+</div>
 
+<div className="group relative">
   <button
     className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-white/50 text-black hover:bg-gray-500 hover:text-white transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
     onClick={() => fileInputRef.current.click()}
-    title="Upload File"
   >
     <FileText className="w-4 h-4 md:w-6 md:h-6" />
   </button>
+  <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 bg-gray-800 text-white text-sm py-2 px-4 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:translate-x-2 group-hover:scale-105 pointer-events-none group-hover:pointer-events-auto">
+    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -ml-2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-b-8 border-b-gray-800"></div>
+    Upload File
+  </div>
+</div>
+
+
   <input
     type="file"
     accept="application/pdf, image/*"
