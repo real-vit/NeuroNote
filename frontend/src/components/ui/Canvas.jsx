@@ -6,7 +6,7 @@ import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { createWorker } from 'tesseract.js';
 import Navbar from './NavBar.jsx';
 import { useNavigate } from 'react-router-dom';
-
+import { marked } from "marked";
 
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
@@ -251,6 +251,33 @@ const Canvas = () => {
     setShowAISidebar(true);
   };
 
+  const handleSummary = async () =>{
+    const canvasContent = canvasRef.current.innerHTML;
+    console.log(canvasContent);
+    try{
+    const response = await fetch("http://127.0.0.1:8000/process_notes_async", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        raw_notes: canvasContent,
+        research: true,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to process notes");
+    }
+
+    const output = await response.json();
+    const markDown = output.summary;
+    const htmlSummary = marked(markDown);
+    canvasRef.current.innerHTML = htmlSummary;
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
   return (
     <>
     <Navbar/>
@@ -525,7 +552,7 @@ const Canvas = () => {
         {/* Buttons */}
                 <div className="space-y-4">
               {[
-                { icon: Book, label: "Summarise", color: "text-blue-500", gradient: "from-blue-50 to-blue-100" },
+                { icon: Book, label: "Summarise", color: "text-blue-500", gradient: "from-blue-50 to-blue-100" , onClick:()=>handleSummary()},
                 { icon: Search, label: "Find Resources", color: "text-purple-500", gradient: "from-purple-50 to-purple-100" },
                 { 
                   icon: BrainCircuit, 

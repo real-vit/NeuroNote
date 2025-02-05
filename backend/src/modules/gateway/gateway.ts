@@ -8,6 +8,7 @@ import {
   OnGatewayDisconnect 
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
+import axios from 'axios';
 
 @WebSocketGateway({
   cors: {
@@ -61,7 +62,7 @@ export class MyGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayD
   }
 
   @SubscribeMessage('sendMessage')
-  handleSendMessage(
+  async handleSendMessage(
     @MessageBody() data: { message: string, roomCode: string, userId: string },
     @ConnectedSocket() client: Socket
   ) {
